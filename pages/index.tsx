@@ -1,8 +1,22 @@
 import React from "react";
 import Head from "next/head";
 import { Feed } from "../components/Feed";
+import { getPostsData } from "../lib/posts";
 
-export default function Front() {
+export async function getStaticProps() {
+  const allData = getPostsData();
+  const posts = allData.parsedDataPosts;
+  const categories = allData.parsedDataCat;
+
+  return {
+    props: {
+      posts,
+      categories
+    }
+  };
+}
+
+export default function Front({ posts, categories }) {
   return (
     <>
       <Head>
@@ -10,7 +24,7 @@ export default function Front() {
       </Head>
 
       <main>
-        <Feed />
+        <Feed posts={posts} categories={categories} />
       </main>
     </>
   );
